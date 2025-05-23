@@ -1,38 +1,58 @@
-import { model, Schema } from 'mongoose';
+import mongoose from 'mongoose';
+import { v4 as uuidv4 } from 'uuid';
 
-const userSchema = new Schema({
-    firstName: {
-        type: String,
-        required: true,
-        lowercase: true
+const userSchema = new mongoose.Schema(
+    {
+        uniqueId: {
+            type: String,
+            default: uuidv4,
+            unique: true,
+        },
+        
+        username: {
+            type: String,
+            trim: true,
+        },
+
+        phoneNumber: {
+            number: {
+                type: String,
+                required: true,
+                trim: true,
+            },
+
+        countryCode: {
+                type: String,
+                required: true,
+                trim: true,
+            },
+        },
+
+        partnerId: {
+            type: String, 
+            default: null,
+            trim: true,
+        },
+
+        sentCount: {
+            type: Number,
+            default: 0,
+        },
+
+        receivedCount: {
+            type: Number,
+            default: 0,
+        },
     },
-
-    lastName: {
-        type: String,
-        required: true,
-        lowercase: true
-    },
-
-    email: {
-        type: String,
-        required: true,
-        lowercase: true,
-        unique: true
-    },
-
-    password: {
-        type: String,
-        required: true
-    },
-
-    uniqueId: {
-        type: String,
-        required: true,
-        unique: true
+    {
+        timestamps: true,
+        versionKey: false,
     }
-}, {
-    timestamps: true,
-    versionKey: false
-});
+);
 
-export default model('user', userSchema);
+userSchema.index(
+  { 'phoneNumber.number': 1, 'phoneNumber.countryCode': 1 },
+  { unique: true }
+);
+
+export default mongoose.model('User', userSchema);
