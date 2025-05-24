@@ -1,7 +1,7 @@
 import { connect } from 'mongoose';
 
 // Replace <<NameDatabase>> for your local database name
-const URI = 'mongodb://0.0.0.0/full-auth';
+const URI = 'mongodb://0.0.0.0/thinker-app';
 
 connect(URI, {
     useNewUrlParser: true,
